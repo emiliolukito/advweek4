@@ -48,10 +48,10 @@ class StudentDetailFragment : Fragment() {
 
     fun observeViewModel(){
         viewModel.studentLD.observe(viewLifecycleOwner, Observer {
-            txtID.setText(viewModel.studentLD.value?.id)
-            txtName.setText(viewModel.studentLD.value?.name)
-            txtBod.setText(viewModel.studentLD.value?.bod)
-            txtPhone.setText(viewModel.studentLD.value?.phone)
+            txtID.setText(it.id)
+            txtName.setText(it.name)
+            txtBod.setText(it.bod)
+            txtPhone.setText(it.phone)
         })
 
     }
