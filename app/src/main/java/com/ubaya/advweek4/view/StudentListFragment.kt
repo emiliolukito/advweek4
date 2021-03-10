@@ -48,6 +48,14 @@ class StudentListFragment : Fragment() {
         recView.adapter = studentListAdapter
 
         observeViewModel()
+
+        refreshLayout.setOnRefreshListener {
+            recView.visibility = View.GONE
+            txtError.visibility = View.GONE
+            progressLoad.visibility = View.VISIBLE
+            viewModel.refresh()
+            refreshLayout.isRefreshing = false
+        }
     }
 
     fun observeViewModel(){
@@ -60,16 +68,18 @@ class StudentListFragment : Fragment() {
         })
 
         viewModel.loadingLD.observe(viewLifecycleOwner, Observer {
-            if (it)
-            {
-                recView.visibility = View.VISIBLE
-                progressLoad.visibility = View.GONE
-            }
-            else
+            if (it) //jika sedang loading, recycleview dihilangkan, dan sebaliknya
             {
                 recView.visibility = View.GONE
                 progressLoad.visibility = View.VISIBLE
             }
+            else
+            {
+                recView.visibility = View.VISIBLE
+                progressLoad.visibility = View.GONE
+            }
         })
     }
+
+
 }
