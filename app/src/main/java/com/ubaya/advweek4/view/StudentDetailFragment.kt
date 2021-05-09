@@ -1,6 +1,7 @@
 package com.ubaya.advweek4.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,17 @@ import com.ubaya.advweek4.model.Student
 import com.ubaya.advweek4.util.loadImage
 import com.ubaya.advweek4.viewmodel.DetailViewModel
 import com.ubaya.advweek4.viewmodel.ListViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable.timer
+import io.reactivex.rxjava3.core.Maybe.timer
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_student_detail.*
 import kotlinx.android.synthetic.main.fragment_student_list.*
 import kotlinx.android.synthetic.main.student_list_item.view.*
+import java.util.*
+import java.util.concurrent.TimeUnit
+import android.database.Observable as Observable1
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,12 +63,26 @@ class StudentDetailFragment : Fragment() {
 
     fun observeViewModel(){
         viewModel.studentLD.observe(viewLifecycleOwner, Observer {
+
+
             txtID.setText(it.id)
             txtName.setText(it.name)
             txtBod.setText(it.bod)
             txtPhone.setText(it.phone)
             imageView2.loadImage(it.photoUrl.toString(),progressBar2)
-        })
 
+            var student = it
+            btnNotif.setOnClickListener {
+                Observable.timer(5, TimeUnit.SECONDS)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            Log.d("Messages", "five seconds")
+                            MainActivity.showNotification(student.name.toString(),
+                                    "A new notification created",
+                                    R.drawable.ic_baseline_person_24)
+                        }
+            }
+        })
     }
 }
