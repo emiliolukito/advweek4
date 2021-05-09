@@ -7,6 +7,7 @@ import android.os.Build
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.ubaya.advweek4.R
@@ -38,4 +39,10 @@ Boolean, name: String, description: String) {
                 context.getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(channel)
     }
+}
+
+@BindingAdapter("android:imageUrl","android:progressBar")
+fun loadPhotoURL(view:ImageView, url: String, pb: ProgressBar)
+{
+    view.loadImage(url,pb)
 }
